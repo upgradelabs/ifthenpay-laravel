@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Upgradelabs\Ifthenpay\MBWay\Contracts\MBWayPayments;
 use Upgradelabs\Ifthenpay\MBWay\DTO\MBWayPaymentRequestResponse;
 use Upgradelabs\Ifthenpay\MBWay\Enums\MBWayPaymentRequestStatus;
+use Upgradelabs\Ifthenpay\MBWay\Exceptions\IfThenPayMBWayApiException;
 use Upgradelabs\Ifthenpay\MBWay\Models as MBWayPaymentRequestModel;
 
 class MBWayPaymentRequest implements MBWayPayments
@@ -24,10 +25,13 @@ class MBWayPaymentRequest implements MBWayPayments
         private readonly string $email = '',
     ) {}
 
+    /**
+     * @throws \Exception
+     */
     public function send(): array
     {
         $data = [
-            'mbWayKey' => config('mbway.key'),
+            'mbWayKey' => config('ifthenpay-laravel.mbway.key'),
             'orderId' => $this->order_id,
             'amount' => $this->amount,
             'mobileNumber' => $this->mobile_number,
@@ -47,6 +51,7 @@ class MBWayPaymentRequest implements MBWayPayments
                 MBWayPaymentRequestStatus::CouldNotComplete->value => $this->send(), //The initialization request could not be completed. You can try again.
                 MBWayPaymentRequestStatus::TransactionDeclined->value => $this->handleTransactionDeclined($dto),
                 MBWayPaymentRequestStatus::Error->value => $this->handleError($dto),
+                default => throw new IfThenPayMBWayApiException('Unknown status code, from MBWay API Payment Request'),
             };
 
         } catch (MappingError $error) {

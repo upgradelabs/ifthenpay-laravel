@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Upgradelabs\Ifthenpay\MBWay\Contracts\MBWayPayments;
 use Upgradelabs\Ifthenpay\MBWay\DTO\MBWayPaymentStatusResponse;
 use Upgradelabs\Ifthenpay\MBWay\Enums\MBWayPaymentCheckStatus;
+use Upgradelabs\Ifthenpay\MBWay\Exceptions\IfThenPayMBWayApiException;
 use Upgradelabs\Ifthenpay\MBWay\Models\MBWayPaymentStatusModel;
 
 class MBWayPaymentStatus implements MBWayPayments
@@ -23,12 +24,13 @@ class MBWayPaymentStatus implements MBWayPayments
 
     /**
      * @throws ConnectionException
+     * @throws \Exception
      */
     public function send(): array
     {
         $response = Http::withUrlParameters([
             'endpoint' => $this->url,
-            'mbWayKey' => config('mbway.key'),
+            'mbWayKey' => config('ifthenpay-laravel.mbway.key'),
             'requestId' => $this->requestId,
         ])
             ->get('{+endpoint}?mbWayKey={mbWayKey}&requestId={requestId}')
@@ -44,7 +46,7 @@ class MBWayPaymentStatus implements MBWayPayments
                 MBWayPaymentCheckStatus::TransactionDeclined->value => $this->handleTransactionDeclined($dto),
                 MBWayPaymentCheckStatus::TransactionAwaitingPayment->value => $this->handleTransactionAwaiting($dto),
                 MBWayPaymentCheckStatus::TransactionExpired->value => $this->handleTransactionExpired($dto),
-                default => $dto->Status,
+                default => throw new IfThenPayMBWayApiException('Unknown status code, from MBWay Payment Status'),
             };
 
         } catch (MappingError $error) {

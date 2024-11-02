@@ -9,15 +9,13 @@ class IfthenpayServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('ifthenpay-laravel')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_ifthenpay_laravel_table');
+            ->hasMigrations([
+                'create_mbway_payment_requests_table',
+                'create_mbway_payment_statuses_table',
+                'create_mbway_payment_refunds_table',
+            ]);
     }
 }

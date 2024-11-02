@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Upgradelabs\Ifthenpay\MBWay\Contracts\MBWayPayments;
 use Upgradelabs\Ifthenpay\MBWay\DTO\MBWayPaymentRefundResponse;
 use Upgradelabs\Ifthenpay\MBWay\Enums\MBWayPaymentRefundStatus;
+use Upgradelabs\Ifthenpay\MBWay\Exceptions\IfThenPayMBWayApiException;
 use Upgradelabs\Ifthenpay\MBWay\Models\MBWayRefundModel;
 
 class MBWayPaymentRefunds implements MBWayPayments
@@ -23,10 +24,13 @@ class MBWayPaymentRefunds implements MBWayPayments
         private readonly int $order
     ) {}
 
+    /**
+     * @throws \Exception
+     */
     public function send(): array
     {
         $data = [
-            'backofficekey' => config('mbway.backoffice_key'),
+            'backofficekey' => config('ifthenpay-laravel.mbway.backoffice_key'),
             'requestId' => $this->requestId,
             'amount' => $this->amount,
         ];
@@ -42,7 +46,7 @@ class MBWayPaymentRefunds implements MBWayPayments
                 MBWayPaymentRefundStatus::Success->value => $this->handleSuccess($dto),
                 MBWayPaymentRefundStatus::InsufficientFunds->value => $this->handleInsufficientFunds($dto),
                 MBWayPaymentRefundStatus::Error->value => $this->handleError($dto),
-                default => $dto->Code,
+                default => throw new IfThenPayMBWayApiException('Unknown status code, from MBWay API Refund Request'),
 
             };
 
