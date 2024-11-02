@@ -8,7 +8,6 @@ enum MBWayPaymentCheckStatus: string
     case TransactionRejected = '020';
     case TransactionExpired = '101';
     case TransactionDeclined = '122';
-
     case TransactionAwaitingPayment = '123';
 }
 
