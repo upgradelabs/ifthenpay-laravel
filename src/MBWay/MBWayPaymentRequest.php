@@ -26,7 +26,7 @@ class MBWayPaymentRequest implements MBWayPayments
     ) {}
 
     /**
-     * @throws \Exception
+     * @throws IfThenPayMBWayApiException
      */
     public function send(): array
     {

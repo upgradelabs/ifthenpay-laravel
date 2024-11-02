@@ -24,7 +24,7 @@ class MBWayPaymentStatus implements MBWayPayments
 
     /**
      * @throws ConnectionException
-     * @throws \Exception
+     * @throws IfThenPayMBWayApiException
      */
     public function send(): array
     {
