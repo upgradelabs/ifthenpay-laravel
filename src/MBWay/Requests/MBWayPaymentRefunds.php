@@ -1,6 +1,6 @@
 <?php
 
-namespace Upgradelabs\Ifthenpay\MBWay;
+namespace Upgradelabs\Ifthenpay\MBWay\Requests;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Exception\InvalidSource;
@@ -8,13 +8,14 @@ use CuyZ\Valinor\Mapper\Source\JsonSource;
 use CuyZ\Valinor\MapperBuilder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Upgradelabs\Ifthenpay\MBWay\Abstract\MBWay;
 use Upgradelabs\Ifthenpay\MBWay\Contracts\MBWayPayments;
 use Upgradelabs\Ifthenpay\MBWay\DTO\MBWayPaymentRefundResponse;
 use Upgradelabs\Ifthenpay\MBWay\Enums\MBWayPaymentRefundStatus;
 use Upgradelabs\Ifthenpay\MBWay\Exceptions\IfThenPayMBWayApiException;
 use Upgradelabs\Ifthenpay\MBWay\Models\MBWayRefundModel;
 
-class MBWayPaymentRefunds implements MBWayPayments
+final class MBWayPaymentRefunds implements MBWayPayments
 {
     private string $url = 'https://ifthenpay.com/api/endpoint/payments/refund';
 
@@ -65,7 +66,7 @@ class MBWayPaymentRefunds implements MBWayPayments
 
     }
 
-    protected function handleSuccess(MBWayPaymentRefundResponse $dto): array
+    private function handleSuccess(MBWayPaymentRefundResponse $dto): array
     {
         $this->toDatabase($dto);
 
@@ -77,7 +78,7 @@ class MBWayPaymentRefunds implements MBWayPayments
 
     }
 
-    protected function handleInsufficientFunds(MBWayPaymentRefundResponse $dto): array
+    private function handleInsufficientFunds(MBWayPaymentRefundResponse $dto): array
     {
         $this->toDatabase($dto);
 
@@ -99,7 +100,7 @@ class MBWayPaymentRefunds implements MBWayPayments
         ];
     }
 
-    protected function toDatabase(MBWayPaymentRefundResponse $dto): void
+    private function toDatabase(MBWayPaymentRefundResponse $dto): void
     {
         MBWayRefundModel::create([
             'request_id' => $this->requestId,

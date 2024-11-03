@@ -1,6 +1,6 @@
 <?php
 
-namespace Upgradelabs\Ifthenpay\MBWay;
+namespace Upgradelabs\Ifthenpay\MBWay\Requests;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Exception\InvalidSource;
@@ -8,13 +8,14 @@ use CuyZ\Valinor\Mapper\Source\JsonSource;
 use CuyZ\Valinor\MapperBuilder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Upgradelabs\Ifthenpay\MBWay\Abstract\MBWay;
 use Upgradelabs\Ifthenpay\MBWay\Contracts\MBWayPayments;
 use Upgradelabs\Ifthenpay\MBWay\DTO\MBWayPaymentRequestResponse;
 use Upgradelabs\Ifthenpay\MBWay\Enums\MBWayPaymentRequestStatus;
 use Upgradelabs\Ifthenpay\MBWay\Exceptions\IfThenPayMBWayApiException;
 use Upgradelabs\Ifthenpay\MBWay\Models as MBWayPaymentRequestModel;
 
-class MBWayPaymentRequest implements MBWayPayments
+final class MBWayPaymentRequest implements MBWayPayments
 {
     private string $url = 'https://ifthenpay.com/api/spg/payment/mbway';
 
