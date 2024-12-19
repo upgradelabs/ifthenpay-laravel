@@ -2,7 +2,6 @@
 
 namespace Upgradelabs\Ifthenpay\MBWay\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class MBWayPaymentRequestModel extends Model
@@ -16,5 +15,4 @@ class MBWayPaymentRequestModel extends Model
         'amount',
         'message',
     ];
-
 }

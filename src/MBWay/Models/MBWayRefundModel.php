@@ -4,7 +4,6 @@ namespace Upgradelabs\Ifthenpay\MBWay\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class MBWayRefundModel extends Model
 {
     protected $table = 'ifthenpay_mbway_refunds';
@@ -15,6 +14,4 @@ class MBWayRefundModel extends Model
         'amount',
         'message',
     ];
-
-
 }
