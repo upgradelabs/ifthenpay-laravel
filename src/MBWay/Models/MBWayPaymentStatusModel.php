@@ -9,7 +9,6 @@ class MBWayPaymentStatusModel extends Model
     protected $table = 'ifthenpay_mbway_payment_statuses';
 
     protected $fillable = [
-        'order_id',
         'status',
         'amount',
         'message',

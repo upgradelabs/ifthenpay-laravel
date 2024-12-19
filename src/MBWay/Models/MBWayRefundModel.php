@@ -2,9 +2,8 @@
 
 namespace Upgradelabs\Ifthenpay\MBWay\Models;
 
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class MBWayRefundModel extends Model
 {
@@ -17,8 +16,5 @@ class MBWayRefundModel extends Model
         'message',
     ];
 
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
+
 }
